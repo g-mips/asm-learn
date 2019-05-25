@@ -1,0 +1,10 @@
+# Compilation Files #
+#####################
+bin
+obj
+
+# Tmp Files #
+#############
+*~
+.*.swp
+.*.swo
