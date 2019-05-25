@@ -11,8 +11,8 @@ hello_str:
 _start:
     mov eax, 4
     mov ebx, 1
-    mov ecx, [esi + hello_str]
-    mov edx, [esi + hello_str_len]
+    lea ecx, hello_str
+    mov edx, hello_str_len
     int 0x80
 
     mov eax, 1
