@@ -23,10 +23,10 @@ $(BIN_DIR)/win32-console-x86_64-gas_intel.exe: $(OBJ_DIR)/win32-console-x86_64-g
 	x86_64-w64-mingw32-$(LD) $? -o $@ -lkernel32
 
 $(OBJ_DIR)/linux-x86-gas_intel.o: linux-x86-gas_intel.s
-	$(AS) $? --32 -o $@
+	$(AS) $? -g --32 -o $@
 
 $(OBJ_DIR)/linux-x86_64-gas_intel.o: linux-x86_64-gas_intel.s
-	$(AS) $? --64 -o $@
+	$(AS) $? -g --64 -o $@
 
 $(OBJ_DIR)/win32-console-x86-gas_att.o: win32-console-x86-gas_att.s
 	i686-w64-mingw32-$(AS) $? -o $@
