@@ -31,12 +31,11 @@ WindowProc:
     push   rbp
     mov    rbp, rsp
     ; shadow space. parameter space. local variables
-    ; sub    rsp, (32 + 0 + 80) ; 8 more bytes to be divisible by 16
     sub    rsp, (16 + 72 + 8 + 32)
 
 %define psStart    88
 %define ps         rbp - (psStart     ) ; PAINTSTRUCT 72 bytes
-%define ps.rcPaint rbp - (psStart - 12) ; ? bytes
+%define ps.rcPaint rbp - (psStart - 12) ; 16 bytes
 
     ; Save WindowProc parameters into local variables
     mov    qword [rbp + 16], rcx ; hwnd
@@ -45,9 +44,9 @@ WindowProc:
     mov    qword [rbp + 40], r9 ; lParam
 
     ; Switch on uMsg
-    cmp    dword [rbp - 8], 2 ; WM_DESTROY
+    cmp    dword [rbp + 24], 2 ; WM_DESTROY
     je     .LWindowProc_quit
-    cmp    dword [rbp - 8], 15 ; WM_PAINT
+    cmp    dword [rbp + 24], 15 ; WM_PAINT
     je     .LWindowProc_paint
 
     ; Default
@@ -173,13 +172,13 @@ WinMain:
 
     ; CreateWindowExW
     mov    rcx, 0
-    lea    rdx, [rel class_name]
-    lea    r8, [rel title]
-    mov    r9, 0x00
-    mov    qword [rsp + 4 * 8], 0x00
-    mov    qword [rsp + 5 * 8], 0x00
-    mov    qword [rsp + 6 * 8], 0x00
-    mov    qword [rsp + 7 * 8], 0x00
+    lea    rdx, [class_name]
+    lea    r8, [title]
+    mov    r9, 13565952
+    mov    qword [rsp + 4 * 8], -2147483648
+    mov    qword [rsp + 5 * 8], -2147483648
+    mov    qword [rsp + 6 * 8], -2147483648
+    mov    qword [rsp + 7 * 8], -2147483648
     mov    qword [rsp + 8 * 8], 0x00
     mov    qword [rsp + 9 * 8], 0x00
     mov    r11, qword [wc.hInstance]
