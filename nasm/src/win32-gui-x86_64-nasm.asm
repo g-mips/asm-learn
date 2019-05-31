@@ -43,9 +43,9 @@ WindowProc:
 
     ; Switch on uMsg
     cmp    dword [rbp + 24], 2 ; WM_DESTROY
-    je     .LWindowProc_quit
+    je     WindowProc.quit
     cmp    dword [rbp + 24], 15 ; WM_PAINT
-    je     .LWindowProc_paint
+    je     WindowProc.paint
 
     ; Default
     mov    rcx, [rbp + 16]
@@ -53,16 +53,16 @@ WindowProc:
     mov    r8, [rbp + 32]
     mov    r9, [rbp + 40]
     call   DefWindowProcW
-    jmp    .LWindowProc_end
+    jmp    WindowProc.end
 
-.LWindowProc_quit:
+.quit:
     mov    rcx, 0
     call   PostQuitMessage
 
     mov    rax, 0
-    jmp    .LWindowProc_end
+    jmp    WindowProc.end
 
-.LWindowProc_paint:
+.paint:
     mov    rcx, [rbp + 16]
     lea    rdx, [ps]
     call   BeginPaint
@@ -77,9 +77,9 @@ WindowProc:
     call   EndPaint
 
     mov    rax, 0
-    jmp    .LWindowProc_end
+    jmp    WindowProc.end
 
-.LWindowProc_end:
+.end:
     add    rsp, (72 + 8 + 32)
     pop    rbp
     ret
@@ -174,13 +174,13 @@ WinMain:
 
     ; Make sure the hwnd is not NULL
     cmp    qword [hwnd], 0x00
-    je     .LWinMain_end
+    je     WinMain.end
 
     mov    rcx, qword [hwnd]
     mov    rdx, qword [rbp + 40]
     call   ShowWindow
 
-.LWinMain_get_msg_loop:
+.get_msg_loop:
     lea    rcx, [msg]
     mov    rdx, 0x00
     mov    r8, 0x00
@@ -188,16 +188,16 @@ WinMain:
     call   GetMessageW
 
     cmp    rax, 0x00
-    je     .LWinMain_end
+    je     WinMain.end
 
     lea    rcx, [msg]
     call   TranslateMessage
 
     lea    rcx, [msg]
     call   DispatchMessageW
-    jmp    .LWinMain_get_msg_loop
+    jmp    WinMain.get_msg_loop
 
-.LWinMain_end:
+.end:
     mov    eax, 0
     add    rsp, (152 + 8 + 64 + 32)
     pop    rbp

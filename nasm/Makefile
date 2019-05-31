@@ -5,11 +5,15 @@ SRC_DIR=src
 OBJ_DIR=obj
 BIN_DIR=bin
 
-WIN_LIBS=-lmsvcrt -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32
+WIN_LIBS=-lmsvcrt -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt \
+	 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32
 LIB_PATH=-L/usr/lib/gcc/x86_64-w64-mingw32/9.1.0 -L/usr/x86_64-w64-mingw32/lib
-WIN_OBJS=/usr/x86_64-w64-mingw32/lib/crt2.o /usr/lib/gcc/x86_64-w64-mingw32/9.1.0/crtbegin.o /usr/lib/gcc/x86_64-w64-mingw32/9.1.0/crtend.o
+WIN_OBJS=/usr/x86_64-w64-mingw32/lib/crt2.o \
+	 /usr/lib/gcc/x86_64-w64-mingw32/9.1.0/crtbegin.o \
+	 /usr/lib/gcc/x86_64-w64-mingw32/9.1.0/crtend.o
 
-EXES=$(BIN_DIR)/linux-x86_64-nasm $(BIN_DIR)/win32-console-x86_64-nasm.exe $(BIN_DIR)/win32-gui-x86_64-nasm.exe
+EXES=$(BIN_DIR)/linux-x86_64-nasm $(BIN_DIR)/win32-console-x86_64-nasm.exe \
+     $(BIN_DIR)/win32-gui-x86_64-nasm.exe
 
 .PHONY: all
 all: $(OBJ_DIR) $(BIN_DIR) $(EXES)
