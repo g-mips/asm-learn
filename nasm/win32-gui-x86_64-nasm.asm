@@ -18,8 +18,8 @@ global WindowProc
 
 section .data
 ;;;; String Literals ;;;;
-class_name db 'Sample Window Class', 00h
-title db 'Learn to Program Windows', 00h
+class_name dw __utf16__('Sample Window Class'), 00h
+title      dw __utf16__('Learn to Program Windows'), 00h
 
 ;;;; CODE ;;;;
 section .text
