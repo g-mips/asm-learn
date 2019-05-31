@@ -10,8 +10,6 @@ extern DefWindowProcW
 extern GetMessageW
 extern TranslateMessage
 extern DispatchMessageW
-extern MessageBoxA
-extern GetLastError
 
 global WinMain
 global WindowProc
@@ -156,8 +154,6 @@ WinMain:
     ; RegisterClassExW
     lea    rcx, [wc]
     call   RegisterClassExW
-
-    call   GetLastError
 
     ; CreateWindowExW
     mov    rcx, 0
