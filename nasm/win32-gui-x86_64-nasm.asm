@@ -30,10 +30,10 @@ section .text
 WindowProc:
     push   rbp
     mov    rbp, rsp
-    ; shadow space. parameter space. local variables
-    sub    rsp, (16 + 72 + 8 + 32)
+    ; local variables. padding. parameter space. shadow space.
+    sub    rsp, (72 + 8 + 0 + 32)
 
-%define psStart    88
+%define psStart    72
 %define ps         rbp - (psStart     ) ; PAINTSTRUCT 72 bytes
 %define ps.rcPaint rbp - (psStart - 12) ; 16 bytes
 
@@ -82,7 +82,7 @@ WindowProc:
     jmp    .LWindowProc_end
 
 .LWindowProc_end:
-    add    rsp, (16 + 72 + 8 + 32)
+    add    rsp, (72 + 8 + 32)
     pop    rbp
     ret
 
@@ -92,8 +92,8 @@ WindowProc:
 WinMain:
     push   rbp      ; Save current frame pointer
     mov    rbp, rsp ; Save current stack pointer
-    ; 16 byte boundary. local. padding. parameters shadow space.
-    sub    rsp, (16 + 152 + 8 + 64 + 32)
+    ; local. padding. parameters. shadow space.
+    sub    rsp, (152 + 8 + 64 + 32)
 
     ; Save WinMain parameters into shadow space
     ; (Start at offset 16 to skip return address and current
@@ -103,7 +103,7 @@ WinMain:
     mov    qword [rbp + 32], r8 ; pCmdLine
     mov    dword [rbp + 40], r9d ; nCmdShow
 
-%define wcStart          96                   ;
+%define wcStart          80
 %define wc               rbp - (wcStart     ) ; WNDCLASSEX struct, 80 bytes
 %define wc.cbSize        rbp - (wcStart     ) ; 4 bytes 96 - 92
 %define wc.style         rbp - (wcStart - 4 ) ; 4 bytes 92 - 88
@@ -118,10 +118,10 @@ WinMain:
 %define wc.lpszClassName rbp - (wcStart - 64) ; 8 bytes 32 - 24
 %define wc.hIconSm       rbp - (wcStart - 72) ; 8 bytes 24 - 16
 
-%define hwndStart 104
+%define hwndStart 88
 %define hwnd      rbp - hwndStart ; 8 bytes 104 - 96
 
-%define msgStart     152                   ;
+%define msgStart     136
 %define msg          rbp - (msgStart     ) ; MSG struct, 48 bytes
 %define msg.hwnd     rbp - (msgStart     ) ; 8 bytes 152 - 144
 %define msg.message  rbp - (msgStart - 4 ) ; 4 bytes 144 - 140
@@ -132,17 +132,6 @@ WinMain:
 %define msg.pt.x     rbp - (msgStart - 36) ; 4 bytes 116 - 112
 %define msg.pt.y     rbp - (msgStart - 40) ; 4 bytes 112 - 108
 %define msg.pad2     rbp - (msgStart - 44) ; 4 bytes 108 - 104
-
-    ;mov    rcx, 0
-    ;lea    rdx, [class_name]
-    ;lea    r8, [title]
-    ;mov    r9, 0
-    ;call   MessageBoxA
-
-    ;mov    eax, 0
-    ;add    rsp, (16 + 152 + 8 + 64 + 32)
-    ;pop    rbp
-    ;ret
 
     ; Setup wc
     mov    dword [wc.cbSize], 80
@@ -214,6 +203,6 @@ WinMain:
 
 .LWinMain_end:
     mov    eax, 0
-    add    rsp, (16 + 152 + 8 + 64 + 32)
+    add    rsp, (152 + 8 + 64 + 32)
     pop    rbp
     ret
